@@ -1,27 +1,30 @@
 <template>
-	<l-map id="map" :zoom="zoom" :center="center" @click="addMarker">
-		<l-tile-layer :url="url"></l-tile-layer>
-		<l-marker v-for="(el, id) in markerList" :lat-lng="el" :key="id" :icon="setIcon(el.options)"
-							@click="showOptionsMarker(id)"></l-marker>
-		<l-control>
-			<b-button variant="primary" @click="getUserLocation">Localisez-moi</b-button>
-		</l-control>
+	<div>
+		<l-map id="map" :zoom="zoom" :center="center" @click="addMarker">
+			<l-tile-layer :url="url"></l-tile-layer>
+			<l-marker v-for="(el, id) in markerList" :lat-lng="el" :key="id" :icon="setIcon(el.options)"
+								@click="showOptionsMarker(id)"></l-marker>
+			<l-control>
+				<b-button variant="primary" @click="getUserLocation">Localisez-moi</b-button>
+			</l-control>
 
-		<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez vous faire avec ce marker" centered size="lg">
-			<p>Choisissez la nouvelle icon </p>
-			<div class="d-flex flex-wrap justify-content-between">
-				<b-img id="img1" fluid thumbnail :src="iconFirefox" width="200" size="sm" @click="newIcon=iconFirefox"></b-img>
-				<b-img id="img2" fluid thumbnail :src="iconGoogle" width="200" size="sm" @click="newIcon=iconGoogle"></b-img>
-				<b-img id="img3" fluid thumbnail :src="iconGenerale" width="200" size="sm" @click="newIcon=iconGenerale"></b-img>
-			</div>
+			<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez vous faire avec ce marker" centered size="lg">
+				<p>Choisissez la nouvelle icon </p>
+				<div class="d-flex flex-wrap justify-content-between">
+					<b-img id="img1" fluid thumbnail :src="iconFirefox" width="200" size="sm" @click="newIcon=iconFirefox"></b-img>
+					<b-img id="img2" fluid thumbnail :src="iconGoogle" width="200" size="sm" @click="newIcon=iconGoogle"></b-img>
+					<b-img id="img3" fluid thumbnail :src="iconGenerale" width="200" size="sm" @click="newIcon=iconGenerale"></b-img>
+				</div>
 
-			<template #modal-footer>
-				<b-button variant="danger" class="float-left" @click="removeMarker(idMarkerModified)">Supprimer le marker</b-button>
-				<b-button variant="primary" class="float-right" @click="updateMarker(newIcon, idMarkerModified)">Modifier le marker</b-button>
-			</template>
+				<template #modal-footer>
+					<b-button variant="danger" class="float-left" @click="removeMarker(idMarkerModified)">Supprimer le marker</b-button>
+					<b-button variant="primary" class="float-right" @click="updateMarker(newIcon, idMarkerModified)">Modifier le marker</b-button>
+				</template>
 
-		</b-modal>
-	</l-map>
+			</b-modal>
+		</l-map>
+
+	</div>
 </template>
 
 <script>
@@ -61,27 +64,6 @@ export default {
 		LMarker,
 		LControl,
 	},
-	// mounted() {
-	// 	console.log(navigator)
-	// 	if (navigator.userAgent.includes('Firefox/')){
-	// 		console.log('firefox')
-	// 		this.icon =icon({
-	// 			iconUrl: this.iconFirefox,
-	// 			iconSize: [32, 37],
-	// 			iconAnchor: [16, 37]
-	// 		})
-	//
-	// 	}else if (navigator.userAgent.includes('Chrome/')){
-	// 		console.log('chrome')
-	// 		this.icon = icon( {
-	// 			iconUrl: this.iconGoogle,
-	// 			iconSize: [32, 37],
-	// 			iconAnchor: [16, 37]
-	// 		})
-	//
-	//
-	// 	}
-	// },
 	methods: {
 		addMarker(position) {
 			if (navigator.userAgent.includes('Firefox/')) {
@@ -161,7 +143,7 @@ export default {
 
 <style scoped>
 #map {
-	height: 100%;
+	height: 100vh	;
 	width: 100%;
 }
 
