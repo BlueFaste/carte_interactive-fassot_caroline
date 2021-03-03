@@ -8,7 +8,7 @@
 				<b-button variant="primary" @click="getUserLocation">Localisez-moi</b-button>
 			</l-control>
 
-<!--				On ouvre une modal pour permettre à l'utilisateur les actions qu'il veut réaliser (soit supprimer le marker, soit modifier l'icone)-->
+<!--				On ouvre une modal pour permettre à l'utilisateur les actions qu'il veut réaliser (soit supprimer le marker, soit modifier l'icône)-->
 			<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez-vous faire avec ce marker" centered size="lg">
 				<p>Choisissez la nouvelle icône :</p>
 				<div class="d-flex flex-wrap justify-content-between">
@@ -38,7 +38,7 @@ export default {
 	name: "myMap",
 	firebase() {
 		return {
-			//On récupère tous les marker dans la bdd
+			//On récupère tous les markers dans la bdd
 			markerList: this.$db.ref("/markerList/")
 		};
 	},
@@ -49,19 +49,19 @@ export default {
 			center: [47.472092, -0.550589],
 			markerList: [],
 
-			//On met en place les 3 icones utilisables
+			//On met en place les 3 icônes utilisables
 			iconFirefox: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Google_Maps_icon_%282020%29.svg/714px-Google_Maps_icon_%282020%29.svg.png',
 			iconGoogle: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
 			iconGenerale: 'https://static.thenounproject.com/png/6399-200.png',
 
-			// On préparpe la partie option de l'objet à envoyer en bdd
+			// On prépare la partie option de l'objet à envoyer en bdd
 			options: {
 				iconUrl: this.iconGenerale,
 				iconSize: [32, 37],
 				iconAnchor: [16, 37]
 			},
 
-			//On met de côté l'id du marker a modifier et le nouvel icon
+			//On met de côté l'id du marker à modifier et la nouvelle icône
 			idMarkerModified: '',
 			newIcon: '',
 		};
@@ -84,10 +84,10 @@ export default {
 				this.options.iconUrl = this.iconGenerale;
 			}
 
-			//On met les options de l'icône dans l'objet que l'on envoi en bdd
+			//On met les options de l'icône dans l'objet que l'on envoie en bdd
 			position.latlng.options = this.options;
 
-			//On envoi en vdd
+			//On envoie en vdd
 			this.$firebaseRefs.markerList.push(position.latlng);
 		},
 
@@ -104,7 +104,7 @@ export default {
 					//On supprime le marker en bdd
 					this.$firebaseRefs.markerList.child(markerKey).remove();
 
-					//On ferme la modal qu'on a ouvert
+					//On ferme la modal qu'on a ouverte
 					this.hideOptionsMarker();
 				}
 			});
@@ -114,14 +114,14 @@ export default {
 			//On récupère le marker d'après son id
 			let marker = this.markerList[id];
 
-			//On change l'icône du marker avec celle choisi dans l'objet qu'on va renvoyer
+			//On change l'icône du marker avec celle choisit dans l'objet que l'on va renvoyer
 			marker.options.iconUrl = icon
 
 			//On update le marker dans la bdd
 			this.$firebaseRefs.markerList.child(marker['.key']).update(marker).then(() => {
 				console.log("Marker updated!");
 
-				//On ferme la modal qu'on a ouvert
+				//On ferme la modal qu'on a ouverte
 				this.hideOptionsMarker()
 			});
 		},
@@ -141,7 +141,7 @@ export default {
 		},
 
 		getUserLocation() {
-			//On verifie la présence de la géolocalisation dans le navigateur
+			//On vérifie la présence de la géolocalisation dans le navigateur
 			if ("geolocation" in navigator) {
 				//On récupère la localisation de l'utilisateur
 				navigator.geolocation.getCurrentPosition(
@@ -169,7 +169,7 @@ export default {
 		},
 
 		setIcon(marker) {
-			//Permet de personnaliser le marker return la fonction icon de leaflet
+			//Permet de personnaliser le marker, return la fonction icon de leaflet
 			return icon(marker)
 		}
 
