@@ -1,11 +1,12 @@
 <template>
-<div>
-	<b-list-group>
-		<b-list-group-item v-for="(marker, id) in markerList" :key="id">{{id}} - clé: {{marker['.key']}}, latitude : {{ marker.lat}}, longitude: {{marker.lng}}, icon :
-			<img :src="marker.options.iconUrl" alt="" style="width: 1rem;"></b-list-group-item>
-	</b-list-group>
+	<div>
+		<b-list-group>
+			<b-list-group-item v-for="(marker, id) in markerList" :key="id">{{ id }} - clé: {{ marker['.key'] }}, latitude :
+				{{ marker.lat }}, longitude: {{ marker.lng }}, icon :
+				<img :src="marker.options.iconUrl" alt="" style="width: 1rem;"></b-list-group-item>
+		</b-list-group>
 
-</div>
+	</div>
 </template>
 
 <script>
@@ -16,9 +17,9 @@ export default {
 			markerList: this.$db.ref("/markerList/")
 		};
 	},
-	data(){
-		return{
-			markerList:[],
+	data() {
+		return {
+			markerList: [],
 		}
 	}
 }

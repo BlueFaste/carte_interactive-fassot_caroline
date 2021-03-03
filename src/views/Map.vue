@@ -17,8 +17,11 @@
 				</div>
 
 				<template #modal-footer>
-					<b-button variant="danger" class="float-left" @click="removeMarker(idMarkerModified)">Supprimer le marker</b-button>
-					<b-button variant="primary" class="float-right" @click="updateMarker(newIcon, idMarkerModified)">Modifier le marker</b-button>
+					<b-button variant="danger" class="float-left" @click="removeMarker(idMarkerModified)">Supprimer le marker
+					</b-button>
+					<b-button variant="primary" class="float-right" @click="updateMarker(newIcon, idMarkerModified)">Modifier le
+						marker
+					</b-button>
 				</template>
 
 			</b-modal>
@@ -55,7 +58,7 @@ export default {
 			icon: icon(this.options),
 
 			idMarkerModified: '',
-			newIcon:'',
+			newIcon: '',
 		};
 	},
 	components: {
@@ -108,7 +111,7 @@ export default {
 			this.$bvModal.show('modal-update-options-marker');
 		},
 
-		hideOptionsMarker(){
+		hideOptionsMarker() {
 			this.$bvModal.hide('modal-update-options-marker');
 
 		},
@@ -143,19 +146,20 @@ export default {
 
 <style scoped>
 #map {
-	height: 100vh	;
+	height: 100vh;
 	width: 100%;
 }
 
 
-#img1:active,#img2:active,#img3:active{
+#img1:active, #img2:active, #img3:active {
 	border: solid red 2px !important;
 }
-#img1:hover,#img2:hover,#img3:hover{
+
+#img1:hover, #img2:hover, #img3:hover {
 	border: solid blue 2px;
 }
 
-#img1,#img2,#img3{
+#img1, #img2, #img3 {
 	cursor: pointer;
 }
 </style>
