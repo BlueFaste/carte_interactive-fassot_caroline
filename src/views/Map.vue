@@ -8,8 +8,8 @@
 				<b-button variant="primary" @click="getUserLocation">Localisez-moi</b-button>
 			</l-control>
 
-			<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez vous faire avec ce marker" centered size="lg">
-				<p>Choisissez la nouvelle icon </p>
+			<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez-vous faire avec ce marker" centered size="lg">
+				<p>Choisissez la nouvelle icône :</p>
 				<div class="d-flex flex-wrap justify-content-between">
 					<b-img id="img1" fluid thumbnail :src="iconFirefox" width="200" size="sm" @click="newIcon=iconFirefox"></b-img>
 					<b-img id="img2" fluid thumbnail :src="iconGoogle" width="200" size="sm" @click="newIcon=iconGoogle"></b-img>
@@ -17,10 +17,9 @@
 				</div>
 
 				<template #modal-footer>
-					<b-button variant="danger" class="float-left" @click="removeMarker(idMarkerModified)">Supprimer le marker
+					<b-button variant="danger" @click="removeMarker(idMarkerModified)">Supprimer le marker
 					</b-button>
-					<b-button variant="primary" class="float-right" @click="updateMarker(newIcon, idMarkerModified)">Modifier le
-						marker
+					<b-button variant="primary" @click="updateMarker(newIcon, idMarkerModified)">Modifier le marker
 					</b-button>
 				</template>
 
@@ -74,7 +73,7 @@ export default {
 	methods: {
 		addMarker(position) {
 
-			//On vérifie avec quel navigateur l'utilisateur est connecté et on change l'icone à envoyer en bdd selon le cas
+			//On vérifie avec quel navigateur l'utilisateur est connecté et on change l'icône à envoyer en bdd selon le cas
 			if (navigator.userAgent.includes('Firefox/')) {
 				this.options.iconUrl = this.iconFirefox;
 			} else if (navigator.userAgent.includes('Chrome/')) {
@@ -83,7 +82,7 @@ export default {
 				this.options.iconUrl = this.iconGenerale;
 			}
 
-			//On met les options de l'icon dans l'objet que l'on envoi en bdd
+			//On met les options de l'icône dans l'objet que l'on envoi en bdd
 			position.latlng.options = this.options;
 
 			//On envoi en vdd
@@ -92,7 +91,7 @@ export default {
 
 		removeMarker(idMarker) {
 
-			//On recupère le marker d'après son id
+			//On récupère le marker d'après son id
 			const marker = this.markerList[idMarker]
 			const markerKey = marker['.key']
 
@@ -110,10 +109,10 @@ export default {
 		},
 		updateMarker(icon, id) {
 
-			//On recupère le marker d'après son id
+			//On récupère le marker d'après son id
 			let marker = this.markerList[id];
 
-			//On change l'icon du marker avec celle choisie dans l'objet qu'on va renvoyer
+			//On change l'icône du marker avec celle choisi dans l'objet qu'on va renvoyer
 			marker.options.iconUrl = icon
 
 			//On update le marker dans la bdd
@@ -127,7 +126,7 @@ export default {
 
 		showOptionsMarker(id) {
 
-			//On stocke pour plus tard l'id du marker sur lequel on à cliqué
+			//On stocke pour plus tard l'id du marker sur lequel on a cliqué
 			this.idMarkerModified = id;
 
 			//On ouvre la modal d'action
@@ -140,7 +139,7 @@ export default {
 		},
 
 		getUserLocation() {
-			//On verifie la presence de la géolocalisation dans le navigateur
+			//On verifie la présence de la géolocalisation dans le navigateur
 			if ("geolocation" in navigator) {
 				//On récupère la localisation de l'utilisateur
 				navigator.geolocation.getCurrentPosition(
@@ -148,6 +147,8 @@ export default {
 							// On position la carte sur la localisation de l'utilisateur
 							this.$refs.myMap.mapObject.setView([position.coords.latitude, position.coords.longitude], 22);
 							this.center = [position.coords.latitude, position.coords.longitude];
+
+							//On prépare les données de localisation pour placer un nouveau marker
 							let GeolocaPosition = {
 								latlng: {
 									lat: position.coords.latitude,
