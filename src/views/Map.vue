@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<l-map id="map" :zoom="zoom" :center="center" @click="addMarker">
+	<div class="h-100">
+		<l-map id="map" ref="myMap" :zoom="zoom" :center="center" @click="addMarker">
 			<l-tile-layer :url="url"></l-tile-layer>
 			<l-marker v-for="(el, id) in markerList" :lat-lng="el" :key="id" :icon="setIcon(el.options)"
 								@click="showOptionsMarker(id)"></l-marker>
@@ -47,16 +47,20 @@ export default {
 			zoom: 13,
 			center: [47.472092, -0.550589],
 			markerList: [],
+
+			//On met en place les 3 icones utilisables
 			iconFirefox: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Google_Maps_icon_%282020%29.svg/714px-Google_Maps_icon_%282020%29.svg.png',
 			iconGoogle: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
 			iconGenerale: 'https://static.thenounproject.com/png/6399-200.png',
+
+			// On préparpe la partie option de l'objet à envoyer en bdd
 			options: {
-				iconUrl: this.iconFirefox,
+				iconUrl: this.iconGenerale,
 				iconSize: [32, 37],
 				iconAnchor: [16, 37]
 			},
-			icon: icon(this.options),
 
+			//On met de côté l'id du marker a modifier et le nouvel icon
 			idMarkerModified: '',
 			newIcon: '',
 		};
@@ -69,6 +73,8 @@ export default {
 	},
 	methods: {
 		addMarker(position) {
+
+			//On vérifie avec quel navigateur l'utilisateur est connecté et on change l'icone à envoyer en bdd selon le cas
 			if (navigator.userAgent.includes('Firefox/')) {
 				this.options.iconUrl = this.iconFirefox;
 			} else if (navigator.userAgent.includes('Chrome/')) {
@@ -76,50 +82,71 @@ export default {
 			} else {
 				this.options.iconUrl = this.iconGenerale;
 			}
-			position.latlng.options = this.options;
-			console.log(position)
-			this.$firebaseRefs.markerList.push(position.latlng);
-			console.log('true')
 
+			//On met les options de l'icon dans l'objet que l'on envoi en bdd
+			position.latlng.options = this.options;
+
+			//On envoi en vdd
+			this.$firebaseRefs.markerList.push(position.latlng);
 		},
+
 		removeMarker(idMarker) {
+
+			//On recupère le marker d'après son id
 			const marker = this.markerList[idMarker]
 			const markerKey = marker['.key']
-			console.log(markerKey)
+
+			//On demande une confirmation à l'utilisateur
 			this.$bvModal.msgBoxConfirm("Voulez-vous supprimer le point?").then((confirmation) => {
 				if (confirmation) {
+
+					//On supprime le marker en bdd
 					this.$firebaseRefs.markerList.child(markerKey).remove();
+
+					//On ferme la modal qu'on a ouvert
 					this.hideOptionsMarker();
 				}
 			});
 		},
 		updateMarker(icon, id) {
-			console.log(id)
-			console.log(this.markerList[id])
+
+			//On recupère le marker d'après son id
 			let marker = this.markerList[id];
-			console.log(marker['.key'])
+
+			//On change l'icon du marker avec celle choisie dans l'objet qu'on va renvoyer
 			marker.options.iconUrl = icon
+
+			//On update le marker dans la bdd
 			this.$firebaseRefs.markerList.child(marker['.key']).update(marker).then(() => {
 				console.log("Marker updated!");
+
+				//On ferme la modal qu'on a ouvert
 				this.hideOptionsMarker()
 			});
 		},
 
 		showOptionsMarker(id) {
-			console.log(id)
+
+			//On stocke pour plus tard l'id du marker sur lequel on à cliqué
 			this.idMarkerModified = id;
+
+			//On ouvre la modal d'action
 			this.$bvModal.show('modal-update-options-marker');
 		},
 
 		hideOptionsMarker() {
+			//On ferme la modal d'action
 			this.$bvModal.hide('modal-update-options-marker');
-
 		},
 
 		getUserLocation() {
+			//On verifie la presence de la géolocalisation dans le navigateur
 			if ("geolocation" in navigator) {
+				//On récupère la localisation de l'utilisateur
 				navigator.geolocation.getCurrentPosition(
 						position => {
+							// On position la carte sur la localisation de l'utilisateur
+							this.$refs.myMap.mapObject.setView([position.coords.latitude, position.coords.longitude], 22);
 							this.center = [position.coords.latitude, position.coords.longitude];
 							let GeolocaPosition = {
 								latlng: {
@@ -127,6 +154,8 @@ export default {
 									lng: position.coords.longitude,
 								}
 							};
+
+							//On ajout un marker sur la zone de géolocalisation
 							this.addMarker(GeolocaPosition)
 						},
 						error => {
@@ -137,6 +166,7 @@ export default {
 		},
 
 		setIcon(marker) {
+			//Permet de personnaliser le marker return la fonction icon de leaflet
 			return icon(marker)
 		}
 
@@ -146,7 +176,7 @@ export default {
 
 <style scoped>
 #map {
-	height: 100vh;
+	height: 100%;
 	width: 100%;
 }
 
