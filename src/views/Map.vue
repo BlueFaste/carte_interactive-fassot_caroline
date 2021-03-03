@@ -8,6 +8,7 @@
 				<b-button variant="primary" @click="getUserLocation">Localisez-moi</b-button>
 			</l-control>
 
+<!--				On ouvre une modal pour permettre à l'utilisateur les actions qu'il veut réaliser (soit supprimer le marker, soit modifier l'icone)-->
 			<b-modal ref="modal-update-options-marker" id="modal-update-options-marker" title="Que voulez-vous faire avec ce marker" centered size="lg">
 				<p>Choisissez la nouvelle icône :</p>
 				<div class="d-flex flex-wrap justify-content-between">
@@ -37,6 +38,7 @@ export default {
 	name: "myMap",
 	firebase() {
 		return {
+			//On récupère tous les marker dans la bdd
 			markerList: this.$db.ref("/markerList/")
 		};
 	},
